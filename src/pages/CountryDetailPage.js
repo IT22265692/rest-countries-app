@@ -1,11 +1,16 @@
+// src/pages/CountryDetailPage.js
+// Page to display detailed information about a single country
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 
 function CountryDetailPage() {
+  // Get country code from URL parameters
   const { code } = useParams();
+  // State for country details
   const [country, setCountry] = useState(null);
 
+  // Fetch country details on mount or when code changes
   useEffect(() => {
     axios
       .get(`https://restcountries.com/v3.1/alpha/${code}`)
@@ -15,14 +20,18 @@ function CountryDetailPage() {
       .catch((error) => console.error('Error fetching country details:', error));
   }, [code]);
 
+  // Show loading state if data is not yet available
   if (!country) return <div className="text-center">Loading...</div>;
 
   return (
+    // Container for country details
     <div className="country-detail">
+      {/* Back to countries link */}
       <Link to="/countries" className="btn btn-outline-secondary mb-4">
         Back to Countries
       </Link>
       <div className="row">
+        {/* Country flag */}
         <div className="col-md-6">
           <img
             src={country.flags.png}
@@ -30,6 +39,7 @@ function CountryDetailPage() {
             className="img-fluid mb-3"
           />
         </div>
+        {/* Country information */}
         <div className="col-md-6">
           <h1>{country.name.common}</h1>
           <p><strong>Official Name:</strong> {country.name.official}</p>
